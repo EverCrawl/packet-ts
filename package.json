@@ -24,7 +24,7 @@
     "scripts": {
         "test": "jest",
         "build": "rollup -c",
-        "prepare": "build"
+        "prepare": "npm run build"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^15.1.0",
