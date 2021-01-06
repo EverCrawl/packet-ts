@@ -23,7 +23,8 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "jest",
-        "build": "rollup -c"
+        "build": "rollup -c",
+        "prepare": "build"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^15.1.0",
