@@ -28,8 +28,6 @@ function make_buffer(type: BufferType, value: number) {
     return new Uint8Array(buffer);
 }
 
-type ReaderMethodKey = Exclude<keyof Reader, "read_string">;
-
 const cases: [string, Uint8Array, number][] = [
     ["uint8", make_buffer("u8", 100), 100],
     ["uint16", make_buffer("u16", 10000), 10000],
@@ -44,7 +42,8 @@ describe("Reader scalar", function () {
         const [type, value, expected] = test_case;
         it(`read_${type}`, function () {
             const reader = new Reader(value.buffer);
-            const actual = reader[`read_${type}` as ReaderMethodKey]();
+            // @ts-ignore
+            const actual = reader[`read_${type}`]();
             expect(actual).toEqual(expected);
         });
     }
@@ -55,13 +54,21 @@ describe("Reader scalar", function () {
         const actual = reader.read_string("testing".length);
         expect(actual).toEqual(expected);
     });
+
+    it(`read_bytes`, function () {
+        const expected = make_buffer("u32", 1_000_000_000);
+        const reader = new Reader(expected.buffer);
+        const actual = reader.read_bytes(expected.length);
+        expect(actual).toEqual(expected);
+    });
 });
 describe("Out of bounds read", function () {
     for (const test_case of cases) {
         const [type, ,] = test_case;
         it(`throws on read_${type}`, function () {
             const reader = new Reader(new ArrayBuffer(0));
-            const fn = () => reader[`read_${type}` as ReaderMethodKey]();
+            // @ts-ignore
+            const fn = () => reader[`read_${type}`]();
             expect(fn).toThrowError("Out of bounds");
         })
     }

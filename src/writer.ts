@@ -130,6 +130,11 @@ export class Writer {
         this.encoder.getInto(this.arrayView, this.advance(len));
     }
 
+    write_bytes(value: Uint8Array) {
+        this.ensure(value.byteLength);
+        this.arrayView.set(value, this.advance(value.byteLength));
+    }
+
     finish(): ArrayBuffer {
         return this.view.buffer.slice(0, this.pointer);
     }

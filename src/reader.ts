@@ -55,9 +55,15 @@ export class Reader {
         return this.view.getFloat32(this.advance(4), true);
     }
 
-    // Reads a slice of `len`, may throw in case of out of bounds read.
+    // Reads a string of `len`, may throw in case of out of bounds read.
     read_string(len: number): string {
         const pos = this.advance(len);
         return this.decoder.decode(this.arrayView.slice(pos, pos + len));
+    }
+
+    // Reads a slice of `len`, may throw in case of out of bounds read.
+    read_bytes(len: number): Uint8Array {
+        const pos = this.advance(len);
+        return this.arrayView.slice(pos, pos + len);
     }
 }

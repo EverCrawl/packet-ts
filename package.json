@@ -1,6 +1,6 @@
 {
     "name": "@jprochazk/packet",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Support library for packetc",
     "author": "Jan Procházka",
     "license": "MIT",

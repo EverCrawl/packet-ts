@@ -28,8 +28,6 @@ function make_buffer(type: BufferType, value: number) {
     return new Uint8Array(buffer);
 }
 
-type WriterMethodKey = Exclude<keyof Writer, "write_string">;
-
 const cases: [string, number, Uint8Array][] = [
     ["uint8", 100, make_buffer("u8", 100)],
     ["uint16", 10000, make_buffer("u16", 10000)],
@@ -44,7 +42,8 @@ describe("Reader scalar", function () {
         const [type, value, expected] = test_case;
         it(`write_${type}`, function () {
             const writer = new Writer(expected.byteLength);
-            writer[`write_${type}` as WriterMethodKey](value);
+            //@ts-ignore
+            writer[`write_${type}`](value);
             const actual = writer.finish();
             expect(new Uint8Array(actual)).toEqual(expected);
         });
@@ -54,6 +53,14 @@ describe("Reader scalar", function () {
         const expected = new TextEncoder().encode("testing");
         const writer = new Writer();
         writer.write_string("testing");
+        const actual = writer.finish();
+        expect(new Uint8Array(actual)).toEqual(expected);
+    });
+
+    it(`write_bytes`, function () {
+        const expected = make_buffer("u32", 1_000_000_000);
+        const writer = new Writer();
+        writer.write_bytes(make_buffer("u32", 1_000_000_000));
         const actual = writer.finish();
         expect(new Uint8Array(actual)).toEqual(expected);
     });
