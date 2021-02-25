@@ -3,8 +3,8 @@ export declare class Reader {
     private arrayView;
     private view;
     private decoder;
-    constructor(data: ArrayBuffer);
-    private advance;
+    failed: boolean;
+    constructor(data: ArrayBuffer, offset?: number);
     read_uint8(): number;
     read_uint16(): number;
     read_uint32(): number;

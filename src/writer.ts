@@ -41,11 +41,11 @@ class StringEncoder {
     }
 }
 
+const ENCODER = new StringEncoder();
 export class Writer {
     private pointer: number;
     private arrayView: Uint8Array;
     private view: DataView;
-    private encoder: StringEncoder;
 
     /**
      * Default constructor
@@ -60,13 +60,12 @@ export class Writer {
      * Construct from an existing buffer
      * @param buffer 
      */
-    constructor(buffer: ArrayBuffer);
-    constructor(arg0?: number | ArrayBuffer) {
+    constructor(buffer: ArrayBuffer, offset?: number);
+    constructor(arg0?: number | ArrayBuffer, offset = 0) {
         this.pointer = 0;
         const buffer = arg0 instanceof ArrayBuffer ? arg0 : new ArrayBuffer(arg0 ?? 0);
-        this.arrayView = new Uint8Array(buffer);
+        this.arrayView = new Uint8Array(buffer, offset);
         this.view = new DataView(buffer);
-        this.encoder = new StringEncoder;
     }
 
     // If needed, resize to fit at least another `additional` bytes
@@ -125,9 +124,9 @@ export class Writer {
     }
 
     write_string(value: string) {
-        const len = this.encoder.encode(value);
+        const len = ENCODER.encode(value);
         this.ensure(len);
-        this.encoder.getInto(this.arrayView, this.advance(len));
+        ENCODER.getInto(this.arrayView, this.advance(len));
     }
 
     write_bytes(value: Uint8Array) {

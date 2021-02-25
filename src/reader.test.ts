@@ -68,8 +68,8 @@ describe("Out of bounds read", function () {
         it(`throws on read_${type}`, function () {
             const reader = new Reader(new ArrayBuffer(0));
             // @ts-ignore
-            const fn = () => reader[`read_${type}`]();
-            expect(fn).toThrowError("Out of bounds");
+            reader[`read_${type}`]();
+            expect(reader.failed).toEqual(true);
         })
     }
 })

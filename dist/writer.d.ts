@@ -2,7 +2,6 @@ export declare class Writer {
     private pointer;
     private arrayView;
     private view;
-    private encoder;
     /**
      * Default constructor
      */
@@ -16,7 +15,7 @@ export declare class Writer {
      * Construct from an existing buffer
      * @param buffer
      */
-    constructor(buffer: ArrayBuffer);
+    constructor(buffer: ArrayBuffer, offset?: number);
     private ensure;
     private advance;
     write_uint8(value: number): void;
